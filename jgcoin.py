@@ -18,6 +18,8 @@ class Blockchain:
         # lista de transacciones(mempool)
         self.transactions = []
         self.create_block(proof = 1, previous_hash = '0')
+        # Crear una colección/conjunto no ordenada de nodos
+        self.nodes = set()
         
     def create_block(self, proof, previous_hash):
         block = {
@@ -71,6 +73,11 @@ class Blockchain:
         self.transactions.append({'sender': sender, 'receiver': receiver, 'amount': amount})
         previous_block = self.get_previous_block()+1
         return previous_block['index']+1
+
+    def add_node(self, address):
+        # solamente nos interesa el dominio y puerto
+        parsed_url = urlparse(address)
+        self.nodes.add(parsed_url.netloc)
         
 # Parte 2 - Minado de un bloque de la cadena
 
