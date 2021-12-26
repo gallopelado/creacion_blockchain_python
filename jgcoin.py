@@ -104,6 +104,10 @@ class Blockchain:
 
 # Crear una aplicación web
 app = Flask(__name__)
+
+# Dirección del nodo en el puerto 5000
+node_address = str(uuid4()).replace('-','')
+
 # En caso de error 500
 # app.config['JSONIFY_PRETTYPRINT_REGULAR'] = False
 
@@ -117,13 +121,17 @@ def mine_block():
     previous_proof = previous_block['proof']
     proof = blockchain.proof_of_work(previous_proof)
     previous_hash = blockchain.hash(previous_block)
+    # Pagar al minero
+    blockchain.add_transaction(sender = node_address, receiver = "Juan Jose", amount = 10)
+    # Se crea el bloque, incluido el pago al minero
     new_block = blockchain.create_block(proof, previous_hash)
     response = {
         'message': '¡Has minado un nuevo bloque!',
         'index': new_block['index'],
         'timestamp': new_block['timestamp'],
         'proof': new_block['proof'],
-        'previous_hash': new_block['previous_hash']
+        'previous_hash': new_block['previous_hash'],
+        'transactions': new_block['transactions']
         }
     return jsonify(response), 200
 
