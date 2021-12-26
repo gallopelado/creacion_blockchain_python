@@ -78,6 +78,27 @@ class Blockchain:
         # solamente nos interesa el dominio y puerto
         parsed_url = urlparse(address)
         self.nodes.add(parsed_url.netloc)
+
+    def replace_chain(self):
+        network = self.nodes
+        longest_chain = None
+        max_length = len(self.chain) # supuestamente mi cadena es la más larga
+        # localizar quien tiene la cadena mas larga
+        for node in network:
+            response = requests.get(f'http://{node}/get_chain')
+            if response.status_code == 200:
+                length = response.json()['length']
+                chain = response.json()['chain']
+                # la cadena mas larga es la reina
+                # validar que si mi cadena es menor a la cadena recibida Y si la cadena recibida es válida
+                if length > max_length and self.is_chain_valid(chain):
+                    max_length = length
+                    longest_chain = chain
+        if longest_chain:
+            # reemplazar la cadena
+            self.chain = longest_chain
+            return True
+        return False
         
 # Parte 2 - Minado de un bloque de la cadena
 
