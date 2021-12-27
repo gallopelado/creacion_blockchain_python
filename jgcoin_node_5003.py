@@ -122,7 +122,7 @@ def mine_block():
     proof = blockchain.proof_of_work(previous_proof)
     previous_hash = blockchain.hash(previous_block)
     # Pagar al minero
-    blockchain.add_transaction(sender = node_address, receiver = "Juan Jose", amount = 10)
+    blockchain.add_transaction(sender = node_address, receiver = "Celina", amount = 10)
     # Se crea el bloque, incluido el pago al minero
     new_block = blockchain.create_block(proof, previous_hash)
     response = {
@@ -192,5 +192,5 @@ def replace_chain():
     return jsonify(response), 200
 
 # Ejecutar la app
-app.run('0.0.0.0', port = 5000)
+app.run('0.0.0.0', port = 5003)
 
