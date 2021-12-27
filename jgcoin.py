@@ -165,6 +165,20 @@ def add_transaction():
 
 # Parte 3 - Descentralizar la cadena de bloques
 
+# Conectar nuevos nodos
+@app.route('/connect_node', methods=['POST'])
+def connect_node():
+    json = request.get_json()
+    # conectar un nuevo nodo a todos los nodos
+    nodes = json.get('nodes')
+    if nodes is None:
+        return 'No hay nodos para añadir', 400
+    for node in nodes:
+        blockchain.add_node(node)
+    response = {'message': f'Todos los nodos han sido conectados. La cadena de JJcoins contiene ahora los nodos siguientes ',
+                'total_nodes': list(blockchain.nodes)}
+    return jsonify(response), 201
+
 # Ejecutar la app
 app.run('0.0.0.0', port = 5000)
 
